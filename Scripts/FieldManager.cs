@@ -12,8 +12,6 @@ public class FieldManager : MonoBehaviour
         public int Column;
         public int Line;
 
-        private const int COLUMN_MAX_INDEX = 11;
-
         public Position(int column, int line) {
             this.Column = column;
             this.Line = line;
@@ -34,6 +32,32 @@ public class FieldManager : MonoBehaviour
 
             this.Column = newcolumn;
         }
+
+        /// <summary>
+        /// 列に沿って動かす
+        /// </summary>
+        /// <param name="direction"></param>
+        public void MoveInColumn(int direction)
+        {
+            var newColumn = Column;
+            var newLine = Line + direction;
+
+            if (newLine > LINE_MAX_INDEX)
+            {
+                // 外側に溢れたときは反対側のいちばん外に移動する
+                newColumn = (Column + COLUMN_HALF_NUM) % COLUMN_NUM;
+                newLine = LINE_MAX_INDEX;
+            }
+            else if (newLine < 0)
+            {
+                // 内側に溢れたときは反対側のいちばん内側に移動する
+                newColumn = (Column + COLUMN_HALF_NUM) % COLUMN_NUM;
+                newLine = 0;
+            }
+
+            this.Column = newColumn;
+            this.Line = newLine;
+        }
     }
 
     public class Enemy {
@@ -48,6 +72,12 @@ public class FieldManager : MonoBehaviour
 
     private List<Enemy> _enemyList = new List<Enemy>();
     public List<Enemy> EnemyList => _enemyList;
+
+    private const int COLUMN_MAX_INDEX = 11;
+    private const int LINE_MAX_INDEX = 3;
+
+    private const int COLUMN_NUM = 12;
+    private const int COLUMN_HALF_NUM = 6;
 
     public void Initialize() {
         // 敵データを仮で入れる
@@ -68,9 +98,36 @@ public class FieldManager : MonoBehaviour
     {
         var targetEnemyArray = _enemyList.Where(x => x.Position.Line == lineIndex)
             .ToArray();
+
         foreach (var enemy in targetEnemyArray)
         {
             enemy.Position.MoveInLine(direction);
+        }
+    }
+
+    /// <summary>
+    /// 列方向の移動
+    /// </summary>
+    /// <param name="rowIndex"></param>
+    /// <param name="direction"></param>
+    public void MoveRow(int rowIndex, int direction)
+    {
+        var rightSideRowIndex = rowIndex % 6;
+        var leftSideRowIndex = rightSideRowIndex + 6;
+        var targetEnemyArray = _enemyList.Where(x => x.Position.Column == rightSideRowIndex
+            || x.Position.Column == leftSideRowIndex)
+            .ToArray();
+
+        foreach (var enemy in targetEnemyArray)
+        {
+            if (enemy.Position.Column == rightSideRowIndex)
+            {
+                enemy.Position.MoveInColumn(direction);
+            }
+            else
+            {
+                enemy.Position.MoveInColumn(-direction);
+            }
         }
     }
 }

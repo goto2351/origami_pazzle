@@ -94,6 +94,9 @@ public class PartsFieldUI : MonoBehaviour
             case MoveType.Line:
                 _fieldManager.MoveLine(SelectedIndex, direction);
                 break;
+            case MoveType.Column:
+                _fieldManager.MoveRow(SelectedIndex, direction);
+                break;
             default:
                 Debug.LogWarning($"‚±‚Ì‘€ì‚ÍÀ‘•‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ MoveType: {SelectedMoveType}");
                 break;
