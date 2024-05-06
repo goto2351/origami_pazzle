@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -56,5 +57,20 @@ public class FieldManager : MonoBehaviour
             new Enemy(2, 0, "A"),
             new Enemy(3, 1, "A"),
         };
+    }
+
+    /// <summary>
+    /// 円周方向の移動
+    /// </summary>
+    /// <param name="lineIndex"></param>
+    /// <param name="direction"></param>
+    public void MoveLine(int lineIndex, int direction)
+    {
+        var targetEnemyArray = _enemyList.Where(x => x.Position.Line == lineIndex)
+            .ToArray();
+        foreach (var enemy in targetEnemyArray)
+        {
+            enemy.Position.MoveInLine(direction);
+        }
     }
 }
