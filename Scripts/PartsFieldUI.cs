@@ -23,7 +23,7 @@ public class PartsFieldUI : MonoBehaviour
 
     private void UpdateField() {
         foreach (var enemy in _fieldManager.EnemyList) {
-            _columnArray[enemy.position.column].SetLabel(enemy.position.line, enemy.name);
+            _columnArray[enemy.Position.Column].SetLabel(enemy.Position.Line, enemy.Name);
         }
     }
 

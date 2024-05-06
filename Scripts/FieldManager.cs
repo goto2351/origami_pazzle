@@ -8,14 +8,14 @@ using UnityEngine;
 public class FieldManager : MonoBehaviour
 {
     public class Position {
-        public int column;
-        public int line;
+        public int Column;
+        public int Line;
 
         private const int COLUMN_MAX_INDEX = 11;
 
         public Position(int column, int line) {
-            this.column = column;
-            this.line = line;
+            this.Column = column;
+            this.Line = line;
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ public class FieldManager : MonoBehaviour
         /// </summary>
         /// <param name="direction"></param>
         public void MoveInLine(int direction) {
-            var newcolumn = column + direction;
+            var newcolumn = Column + direction;
             if (newcolumn < 0) {
                 newcolumn = COLUMN_MAX_INDEX;
             }
@@ -31,17 +31,17 @@ public class FieldManager : MonoBehaviour
                 newcolumn = 0;
             }
 
-            this.column = newcolumn;
+            this.Column = newcolumn;
         }
     }
 
     public class Enemy {
-        public Position position;
-        public string name;
+        public Position Position;
+        public string Name;
 
         public Enemy(int row, int line, string name) {
-            this.position = new Position(row, line);
-            this.name = name;
+            this.Position = new Position(row, line);
+            this.Name = name;
         }
     }
 
